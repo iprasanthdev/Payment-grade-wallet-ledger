@@ -202,7 +202,7 @@ public class ReconciliationRepository {
             SELECT 'TRANSFER_WITHOUT_ENTRIES' AS orphan_type, t.id AS entity_id, 'Transfer ' || t.id || ' has no ledger entries' AS details
             FROM transfers t
             LEFT JOIN ledger_entries le ON t.id = le.transfer_id
-            WHERE le.id IS NULL
+            WHERE le.id IS NULL AND t.status = 'COMPLETED'
             UNION ALL
             -- Ledger entries pointing to nonexistent transfer
             SELECT 'ENTRY_WITHOUT_TRANSFER' AS orphan_type, le.id AS entity_id, 'Entry ' || le.id || ' references non-existent transfer ' || le.transfer_id AS details
